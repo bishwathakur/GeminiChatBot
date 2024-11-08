@@ -4,10 +4,10 @@ import 'package:geminichatbot/CustomWidgets/botttext.dart';
 import 'CustomWidgets/prompttext.dart';
 import 'package:google_gemini/google_gemini.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 
-
-//ignore_for_file: prefer_const_constructors
-//ignore_for_file: prefer_const_literals
+// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_literals
 
 String apiKey = "AIzaSyCBLnpE9Ui-p-r5RpTZj2FO0jjbC1jBdHQ";
 
@@ -18,7 +18,8 @@ class TextOnly extends StatefulWidget {
   State<TextOnly> createState() => _TextOnlyState();
 }
 
-class _TextOnlyState extends State<TextOnly> with AutomaticKeepAliveClientMixin {
+class _TextOnlyState extends State<TextOnly>
+    with AutomaticKeepAliveClientMixin {
   bool loading = false;
   List history = [];
   String promptText = "";
@@ -26,7 +27,7 @@ class _TextOnlyState extends State<TextOnly> with AutomaticKeepAliveClientMixin 
   final textController = TextEditingController();
   final itemScrollController = ItemScrollController();
 
-  void AsyncCall() async {
+  void asyncCall() async {
     await Future.delayed(Duration(seconds: 7));
     setState(() {
       loading = false;
@@ -41,20 +42,35 @@ class _TextOnlyState extends State<TextOnly> with AutomaticKeepAliveClientMixin 
     setState(() {
       history.add({'role': role, 'text': text});
 
-      if(history.length>2) {
-        itemScrollController.scrollTo(index: history.length+1, duration: Duration(seconds: 1), curve: Curves.easeInOutCubic);
+      if (history.length > 2) {
+        itemScrollController.scrollTo(
+            index: history.length + 1,
+            duration: Duration(seconds: 1),
+            curve: Curves.easeInOutCubic);
       }
     });
   }
 
-  Future<void> generateText(prompt) async {
-    String response = "";
-    await gemini
-        .generateFromText(prompt)
-        .then((value) => response = value.text)
-        .catchError((error) => response = "Error Occurred: $error");
-    loading = false;
-    logHistory("gemini", response);
+  Future<void> generateText(String prompt) async {
+    final model = GenerativeModel(
+      model: 'gemini-1.5-flash-latest',
+      apiKey: apiKey,
+    );
+
+    final content = [Content.text(prompt)];
+    String responseText = "";
+
+    try {
+      final response = await model.generateContent(content);
+      responseText = response.text ?? "No response found";  // Extract the text from the response
+    } catch (error) {
+      responseText = "Error Occurred: $error"; // Handle error scenario
+    }
+
+    setState(() {
+      loading = false;
+      logHistory("gemini", responseText); // Log the response or error
+    });
   }
 
   @override
@@ -71,14 +87,13 @@ class _TextOnlyState extends State<TextOnly> with AutomaticKeepAliveClientMixin 
           children: [
             Expanded(
                 child: ScrollablePositionedList.builder(
-                  itemScrollController: itemScrollController,
-                  itemCount: history.length,
-                    itemBuilder: (context,index)
-                    {
-                      return (history[index]['role'] == "User") ? PromptText(prompt: history[index]['text']):botText(text: history[index]['text']);
-                    }
-                )
-            ),
+                    itemScrollController: itemScrollController,
+                    itemCount: history.length,
+                    itemBuilder: (context, index) {
+                      return (history[index]['role'] == "User")
+                          ? PromptText(prompt: history[index]['text'])
+                          : botText(text: history[index]['text']);
+                    })),
             Container(
               alignment: Alignment.bottomRight,
               margin: const EdgeInsets.all(20),
@@ -92,7 +107,7 @@ class _TextOnlyState extends State<TextOnly> with AutomaticKeepAliveClientMixin 
                   Expanded(
                     child: TextFormField(
                       controller: textController,
-                      onChanged: (text){
+                      onChanged: (text) {
                         promptText = text;
                       },
                       decoration: InputDecoration(
@@ -113,7 +128,7 @@ class _TextOnlyState extends State<TextOnly> with AutomaticKeepAliveClientMixin 
                       icon: Icon(Icons.send_rounded,
                           color: Colors.green[700], size: 40.0),
                       onPressed: () {
-                        if(promptText.isNotEmpty) {
+                        if (promptText.isNotEmpty) {
                           setState(() {
                             FocusManager.instance.primaryFocus?.unfocus();
                             String p = promptText;
@@ -121,7 +136,6 @@ class _TextOnlyState extends State<TextOnly> with AutomaticKeepAliveClientMixin 
                             textController.clear();
                             loading = true;
                             generateText(p);
-
                           });
                         }
                       },
@@ -130,7 +144,7 @@ class _TextOnlyState extends State<TextOnly> with AutomaticKeepAliveClientMixin 
                   Visibility(
                       visible: loading,
                       child: SpinKitFadingCube(
-                        color: Colors.green[700]!!,
+                        color: Colors.green[700]!,
                       ))
                 ],
               ),

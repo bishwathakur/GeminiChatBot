@@ -9,11 +9,11 @@ import 'package:image_picker/image_picker.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'CustomWidgets/promptimagetext.dart';
-
+import 'package:google_generative_ai/google_generative_ai.dart';
 //ignore_for_file: prefer_const_constructors
 //ignore_for_file: prefer_const_literals
 
-String apiKey = "AIzaSyCBLnpE9Ui-p-r5RpTZj2FO0jjbC1jBdHQ";
+String apiKey = "AIzaSyAoThvv1BL4MmnpGV93IAO8-safpRPYTNs";
 
 class TextWithImage extends StatefulWidget {
   const TextWithImage({super.key});
@@ -65,6 +65,10 @@ class _TextWithImageState extends State<TextWithImage> with AutomaticKeepAliveCl
 
   Future<void> generateTextFromImage(String prompt,File image) async {
     String response = "";
+    // final model = GenerativeModel(
+    //   model: 'gemini-1.5-pro',
+    //   apiKey: apiKey,
+    // );
     await gemini
         .generateFromTextAndImages(query: prompt, image: image)
         .then((value) => response = value.text)
