@@ -1,6 +1,6 @@
-# Gemini Chatbot - A Multi-Modal AI Assistant
+# GemBot AI - A Multi-Modal AI Assistant
 
-Gemini Chatbot is a versatile, multi-modal AI assistant developed in Flutter, leveraging Google’s Gemini AI model to support a range of interaction modes for enhanced user engagement and functionality. The app integrates both text and image capabilities, creating a seamless conversational experience.
+GemBot AI is a versatile, multi-modal AI assistant developed in Flutter, leveraging Google’s Gemini AI model to support a range of interaction modes for enhanced user engagement and functionality. The app integrates both text and image capabilities, creating a seamless conversational experience.
 
 ---
 
@@ -23,7 +23,7 @@ Gemini Chatbot is a versatile, multi-modal AI assistant developed in Flutter, le
 
 ### Interaction Modes
 
-Gemini Chatbot offers three distinct modes of interaction, each tailored for a unique user experience.
+GemBot AI offers three distinct modes of interaction, each tailored for a unique user experience.
 
 - **Text Only Mode**
   - Simple text-based conversations
@@ -55,7 +55,7 @@ Gemini Chatbot offers three distinct modes of interaction, each tailored for a u
 
 ## Architecture
 
-Gemini Chatbot is designed with a clean separation of concerns to maintain clarity and organization within the codebase.
+GemBot AI is designed with a clean separation of concerns to maintain clarity and organization within the codebase.
 
 - **Dashboard**: The main container that houses a `TabController` to manage the three interaction modes.
 - **State Management**: Consistent state management across components to handle various chat states effectively.
@@ -66,7 +66,7 @@ Gemini Chatbot is designed with a clean separation of concerns to maintain clari
 
 ## Getting Started
 
-Follow these instructions to set up and run the Gemini Chatbot on your local machine.
+Follow these instructions to set up and run the GemBot AI on your local machine.
 
 ### Prerequisites
 
@@ -124,4 +124,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ---
 
-Gemini Chatbot demonstrates the powerful possibilities of AI-driven mobile applications by combining text and image interactions in a single platform.
+GemBot AI demonstrates the powerful possibilities of AI-driven mobile applications by combining text and image interactions in a single platform.
